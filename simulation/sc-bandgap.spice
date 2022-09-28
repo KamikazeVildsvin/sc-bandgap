@@ -35,8 +35,6 @@ x2 N_PHI1 VBE2 CAP1K PHI1 VDD VSS transmissiongate W_P=2 L_P=0.26 W_N=1 L_N=0.26
 x3 N_PHI1 VBE2 CAP1 PHI1 VDD VSS transmissiongate W_P=2 L_P=0.26 W_N=1 L_N=0.26 m=1
 .save v(vbe2)
 .save v(vbe1)
-.save v(vbe2)
-.save v(vbe1)
 E2 VREF VSS VOL=' (V(VSS)-V(X))*1e4 > V(VDD) ? V(VDD) : (V(VSS)-V(X))*1e4 '
 x8 CLK net1 net3 VDD VSS lvnand WidthN=1 LenN=0.15 WidthP=1 LenP=0.15 m=1
 x9 net4 net2 net5 VDD VSS lvnand WidthN=1 LenN=0.15 WidthP=1 LenP=0.15 m=1
@@ -67,7 +65,7 @@ x5 N_PHI2 CAP2 VREF PHI2 VDD VSS transmissiongate W_P=2 L_P=0.26 W_N=1 L_N=0.26 
 
 * Parameters *
 .param clk_freq = 1Meg
-.param dutycycle = 0.7
+.param dutycycle = 0.5
 .param t_rise = 1n
 .param t_fall = 1n
 
@@ -80,6 +78,7 @@ x5 N_PHI2 CAP2 VREF PHI2 VDD VSS transmissiongate W_P=2 L_P=0.26 W_N=1 L_N=0.26 
 .options savecurrents
 .save all
 .save @m.xm1.msky130_fd_pr__nfet_01v8[gds]
+.save @m.xm1.msky130_fd_pr__nfet_01v8[gm]
 .save @m.xm2.msky130_fd_pr__nfet_01v8[gds]
 .save @q.xq1.qsky130_fd_pr__pnp_05v5_W3p40L3p40[p]
 
@@ -87,9 +86,6 @@ x5 N_PHI2 CAP2 VREF PHI2 VDD VSS transmissiongate W_P=2 L_P=0.26 W_N=1 L_N=0.26 
 .control
 let run = 1
 set temp=27
-op
-write sc-bandgap.raw
-set appendwrite
 while run <= 1
    if run > 1
       reset
@@ -97,10 +93,14 @@ while run <= 1
    end
    let dtemp = 27 + 40*(run-1)
    set temp=$&dtemp
-   tran 1n 50u 48u
+   tran 1n 10u 8u
    write sc-bandgap.raw
    let run = run + 1
 end
+reset
+op
+set appendwrite
+write sc-bandgap.raw
 .endc
 
 

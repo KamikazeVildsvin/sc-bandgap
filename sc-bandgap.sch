@@ -27,8 +27,8 @@ ypos2=2
 divy=5
 subdivy=1
 unity=1
-x1=1.8
-x2=1.8
+x1=8e-06
+
 divx=5
 subdivx=1
 
@@ -41,8 +41,14 @@ VBE2
 \\"∆VBE;VBE2 VBE1 -\\"
 VBE1"
 y1=0
-y2=0.01
+
 digital=0
+
+
+x2=1e-05
+y2=1.8
+
+dataset=0
 }
 B 2 1260 -620 1890 -420 {flags=graph
 y1=0
@@ -52,8 +58,8 @@ ypos2=0.943761
 
 subdivy=1
 unity=1
-x1=1.8
-x2=1.8
+x1=8e-06
+x2=1e-05
 
 subdivx=1
 node="phi2
@@ -75,8 +81,8 @@ ypos2=2.53888
 divy=5
 subdivy=1
 unity=1
-x1=1.8
-x2=1.8
+x1=8e-06
+x2=1e-05
 divx=5
 subdivx=1
 node="net11
@@ -96,6 +102,7 @@ unitx=u
 digital=1}
 T {Supply Voltage} 130 -970 0 0 0.4 0.4 {}
 T {Clock Signals} 1350 -650 0 0 0.4 0.4 {}
+T {Problems with DC op annotation at the same time as a .tran simulation in V 3.1.0} 1440 -730 0 0 0.2 0.2 {}
 N 900 -460 900 -440 {
 lab=VREF}
 N 900 -460 1030 -460 {
@@ -263,8 +270,8 @@ C {devices/vsource.sym} 200 -900 0 0 {name=V4 value=0 only_toplevel=true}
 C {devices/lab_pin.sym} 200 -870 0 0 {name=l27 sig_type=std_logic lab=0}
 C {devices/lab_pin.sym} 200 -930 0 0 {name=l28 sig_type=std_logic lab=VSS}
 C {devices/lab_wire.sym} 900 -380 2 1 {name=l4 sig_type=std_logic lab=VSS}
-C {devices/lab_wire.sym} 100 -420 0 1 {name=l29 sig_type=std_logic lab=VBE2}
-C {devices/lab_wire.sym} 220 -470 0 1 {name=l30 sig_type=std_logic lab=VBE1}
+C {devices/lab_wire.sym} 100 -450 0 1 {name=l29 sig_type=std_logic lab=VBE2}
+C {devices/lab_wire.sym} 220 -450 0 1 {name=l30 sig_type=std_logic lab=VBE1}
 C {devices/lab_wire.sym} 160 -80 2 0 {name=l31 sig_type=std_logic lab=VSS}
 C {devices/lab_wire.sym} 160 -710 0 1 {name=l32 sig_type=std_logic lab=VDD}
 C {devices/lab_wire.sym} 1160 -460 0 1 {name=l33 sig_type=std_logic lab=VREF}
@@ -369,12 +376,8 @@ C {devices/lab_pin.sym} 340 -310 2 1 {name=l14 sig_type=std_logic lab=N_PHI1
 }
 C {devices/launcher.sym} 1320 -720 0 0 {name=h3
 descr=Annotate
-tclcommand="ngspice::annotate"}
-C {devices/spice_probe.sym} 100 -440 0 1 {name=p2 attrs=""
-voltage=0.7403}
-C {devices/spice_probe.sym} 220 -440 0 1 {name=p4 attrs=""
-voltage=0.6796}
-C {devices/ngspice_get_value.sym} 270 -180 0 0 {name=r2 node=@q.xq1.qsky130_fd_pr__pnp_05v5_W3p40L3p40[p]
+tclcommand="xschem annotate_op"}
+C {devices/ngspice_get_value.sym} 220 -140 0 1 {name=r2 node=@q.xq1.qsky130_fd_pr__pnp_05v5_W3p40L3p40[p]
 descr="Power in Q1"}
 C {devices/spice_probe_vdiff.sym} 140 -330 0 0 {name=p6
 voltage=0.06072}
@@ -387,10 +390,10 @@ VOL="(V(VSS)-V(X))*1e4 > V(VDD) ? V(VDD) :
 + (V(VSS)-V(X))*1e4"}
 C {devices/lab_wire.sym} 140 -350 0 1 {name=l5 sig_type=std_logic lab=VBE2}
 C {devices/lab_wire.sym} 140 -310 2 0 {name=l40 sig_type=std_logic lab=VBE1}
-C {devices/netlist_not_shown.sym} 1250 -950 0 0 {name=Netlist only_toplevel=true value="
+C {devices/netlist_not_shown.sym} 1260 -950 0 0 {name=Netlist only_toplevel=true value="
 * Parameters *
 .param clk_freq = 1Meg
-.param dutycycle = 0.7
+.param dutycycle = 0.5
 .param t_rise = 1n
 .param t_fall = 1n
 
@@ -403,6 +406,7 @@ C {devices/netlist_not_shown.sym} 1250 -950 0 0 {name=Netlist only_toplevel=true
 .options savecurrents
 .save all
 .save @m.xm1.msky130_fd_pr__nfet_01v8[gds]
+.save @m.xm1.msky130_fd_pr__nfet_01v8[gm]
 .save @m.xm2.msky130_fd_pr__nfet_01v8[gds]
 .save @q.xq1.qsky130_fd_pr__pnp_05v5_W3p40L3p40[p]
 
@@ -410,9 +414,6 @@ C {devices/netlist_not_shown.sym} 1250 -950 0 0 {name=Netlist only_toplevel=true
 .control
 let run = 1
 set temp=27
-op
-write sc-bandgap.raw
-set appendwrite
 while run <= 1
    if run > 1
       reset
@@ -420,10 +421,14 @@ while run <= 1
    end
    let dtemp = 27 + 40*(run-1)
    set temp=$&dtemp
-   tran 1n 50u 48u
+   tran 1n 10u 8u
    write sc-bandgap.raw
    let run = run + 1
 end
+reset
+op
+set appendwrite
+write sc-bandgap.raw
 .endc
 "}
 C {devices/lab_pin.sym} 1030 -1030 0 1 {name=l243 sig_type=std_logic lab=PHI2}
