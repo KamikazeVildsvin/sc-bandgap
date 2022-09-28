@@ -1,0 +1,5 @@
+*ngspice plot file
+.control
+(null)
+remcirc
+.endc
