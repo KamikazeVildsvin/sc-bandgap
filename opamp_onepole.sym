@@ -1,0 +1,23 @@
+v {xschem version=3.1.0 file_version=1.2
+}
+G {}
+K {type=subcircuit
+format="@name @pinlist @VDDPIN @VSSPIN @symname gain=@gain f3db=@f3db"
+template="name=x1 gain=1e4 f3db=2e6 VDDPIN=VDD VSSPIN=VSS"
+extra="VDDPIN VSSPIN"}
+V {}
+S {}
+E {}
+L 4 30 -80 30 -0 {}
+L 4 30 -0 110 -40 {}
+L 4 30 -80 110 -40 {}
+B 5 27.5 -22.5 32.5 -17.5 {name=POS dir=in }
+B 5 107.5 -42.5 112.5 -37.5 {name=OUT dir=out }
+B 5 27.5 -62.5 32.5 -57.5 {name=NEG dir=in }
+T {@name} 75 -22 0 0 0.2 0.2 {}
+T {POS} 36.25 -25.25 0 0 0.2 0.2 {}
+T {OUT} 92.5 -46.5 0 1 0.2 0.2 {}
+T {NEG} 35 -66.5 0 0 0.2 0.2 {}
+T {gain = @gain
+f_pole = @f3db} 76.25 -73.75 0 0 0.1 0.1 {}
+T {@symname} 50 -90 0 0 0.15 0.15 {}

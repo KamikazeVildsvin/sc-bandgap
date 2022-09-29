@@ -1,6 +1,7 @@
 *ngspice plot file
 .control
-set color2=rgb:ff/00/00
-plot "CAP1K" 
+set color2=rgb:00/cc/ee
+set color3=rgb:00/cc/ee
+plot "net3" "net5" 
 remcirc
 .endc
