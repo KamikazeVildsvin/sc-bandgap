@@ -23,13 +23,13 @@ subdivx=1
 unitx=u
 color=7
 node="\\"VREF; VREF\\""
-y1=0
+y1=0.19862
 
 digital=0
 
 
 x2=1e-05
-y2=1.8
+y2=1.20832
 
 
 }
@@ -86,6 +86,10 @@ digital=1}
 T {Supply Voltage} 130 -970 0 0 0.4 0.4 {}
 T {Clock Signals} 1350 -650 0 0 0.4 0.4 {}
 T {Problems with DC op annotation at the same time as a .tran simulation in V 3.1.0} 1440 -730 0 0 0.2 0.2 {}
+T {Change the "spice_ignore" 
+proberty to select
+the corret analysis 
+commands (ngspice/Xyce)} 1510 -940 0 0 0.3 0.3 {}
 N 220 -550 220 -240 {
 lab=VBE1}
 N 100 -420 100 -240 {
@@ -231,7 +235,7 @@ spiceprefix=X
 C {devices/iopin.sym} 60 -830 0 0 {name=p1 lab=VDD}
 C {devices/opin.sym} 60 -790 0 0 {name=p5 lab=VREF}
 C {devices/lab_wire.sym} 710 -390 0 1 {name=l1 sig_type=std_logic lab=X}
-C {sky130_fd_pr/corner.sym} 1390 -950 0 0 {name=CORNER only_toplevel=true corner=tt}
+C {sky130_fd_pr/corner.sym} 1880 -950 0 0 {name=CORNER only_toplevel=true corner=tt}
 C {devices/lab_pin.sym} 1000 -520 0 0 {name=l18 sig_type=std_logic lab=PHI2
 }
 C {devices/vsource.sym} 200 -810 0 0 {name=V1 value=1.8 only_toplevel=true}
@@ -265,7 +269,9 @@ C {devices/lab_wire.sym} 750 -100 0 1 {name=l36 sig_type=std_logic lab=CAP3}
 C {devices/lab_wire.sym} 950 -620 0 1 {name=l37 sig_type=std_logic lab=CAP2}
 C {devices/launcher.sym} 1320 -680 0 0 {name=h2
 descr="Load/Unload .raw data"
-tclcommand="xschem raw_read $netlist_dir/[file tail [file rootname [xschem get current_name]]].raw"}
+tclcommand="
+xschem raw_read $netlist_dir/[file tail [file rootname [xschem get current_name]]].raw tran
+"}
 C {sky130_fd_pr/cap_mim_m3_1.sym} 600 -490 3 0 {name=C1K model=cap_mim_m3_1 W=2 L=2 MF=4*9 spiceprefix=X}
 C {sky130_fd_pr/cap_mim_m3_1.sym} 600 -280 3 0 {name=C1 model=cap_mim_m3_1 W=2 L=2 MF=4 spiceprefix=X}
 C {sky130_fd_pr/cap_mim_m3_1.sym} 870 -100 3 0 {name=C3 model=cap_mim_m3_1 W=2 L=2 MF=6 spiceprefix=X}
@@ -357,7 +363,7 @@ C {devices/lab_pin.sym} 340 -310 2 1 {name=l14 sig_type=std_logic lab=N_PHI1
 }
 C {devices/launcher.sym} 1320 -720 0 0 {name=h3
 descr=Annotate
-tclcommand="xschem annotate_op"}
+tclcommand="set show_hidden_texts 1; xschem annotate_op"}
 C {devices/ngspice_get_value.sym} 220 -140 0 1 {name=r2 node=@q.xq1.qsky130_fd_pr__pnp_05v5_W3p40L3p40[p]
 descr="Power in Q1"}
 C {devices/spice_probe_vdiff.sym} 140 -330 0 0 {name=p6
@@ -368,7 +374,10 @@ C {devices/ngspice_get_expr.sym} 470 -230 0 0 {name=r5 node="[format %.4g [expr 
 descr="rds1 (off-state)"}
 C {devices/lab_wire.sym} 140 -350 0 1 {name=l5 sig_type=std_logic lab=VBE2}
 C {devices/lab_wire.sym} 140 -310 2 0 {name=l40 sig_type=std_logic lab=VBE1}
-C {devices/netlist_not_shown.sym} 1260 -950 0 0 {name=Netlist only_toplevel=true value="
+C {devices/netlist_not_shown.sym} 1260 -950 0 0 {name=NGSPICE 
+only_toplevel=true 
+spice_ignore=false
+value="
 * Parameters *
 .param clk_freq = 1Meg
 .param dutycycle = 0.5
@@ -440,3 +449,29 @@ C {devices/lab_pin.sym} 340 -580 2 1 {name=l10 sig_type=std_logic lab=N_PHI2
 }
 C {devices/lab_wire.sym} 860 -340 2 1 {name=l4 sig_type=std_logic lab=VSS}
 C {opamp_onepole.sym} 830 -320 0 0 {name=x6 gain=1e4 f3db=2e6 VDDPIN=VDD VSSPIN=VSS}
+C {devices/netlist_not_shown.sym} 1380 -950 0 0 {name=XYCE 
+only_toplevel=true 
+spice_ignore=true
+value="
+* Parameters *
+.param clk_freq=1Meg
+.param dutycycle=0.5
+.param t_rise=1n
+.param t_fall=1n
+
+* Switch model *
+*.model SWITCH1 sw vt=1 vh=0.2 ron=1k roff=1Meg
+
+* Options *
+*.options wnflag=1 RELTOL=0.001
+*.options wnflag=1 METHOD=GEAR ITL4=100 CHGTOL=1e-15 TRTOL=1 RELTOL=0.0001 VNTOL=0.1u
+*.options savecurrents
+*.save all
+*.save @m.xm1.msky130_fd_pr__nfet_01v8[gds]
+*.save @m.xm1.msky130_fd_pr__nfet_01v8[gm]
+*.save @m.xm2.msky130_fd_pr__nfet_01v8[gds]
+*.save @q.xq1.qsky130_fd_pr__pnp_05v5_W3p40L3p40[p]
+
+.tran 1n 8u 10u
+.print tran format=raw file=sc_bandgap.raw V(*) I(*) 
+"}
