@@ -23,13 +23,13 @@ subdivx=1
 unitx=u
 color=7
 node="\\"VREF; VREF\\""
-y1=0.19862
+y1=0.61
 
 digital=0
 
 
 x2=1e-05
-y2=1.20832
+y2=0.77
 
 
 }
@@ -86,10 +86,6 @@ digital=1}
 T {Supply Voltage} 130 -970 0 0 0.4 0.4 {}
 T {Clock Signals} 1350 -650 0 0 0.4 0.4 {}
 T {Problems with DC op annotation at the same time as a .tran simulation in V 3.1.0} 1440 -730 0 0 0.2 0.2 {}
-T {Change the "spice_ignore" 
-proberty to select
-the corret analysis 
-commands (ngspice/Xyce)} 1510 -940 0 0 0.3 0.3 {}
 N 220 -550 220 -240 {
 lab=VBE1}
 N 100 -420 100 -240 {
@@ -235,13 +231,13 @@ spiceprefix=X
 C {devices/iopin.sym} 60 -830 0 0 {name=p1 lab=VDD}
 C {devices/opin.sym} 60 -790 0 0 {name=p5 lab=VREF}
 C {devices/lab_wire.sym} 710 -390 0 1 {name=l1 sig_type=std_logic lab=X}
-C {sky130_fd_pr/corner.sym} 1880 -950 0 0 {name=CORNER only_toplevel=true corner=tt}
+C {sky130_fd_pr/corner.sym} 1490 -930 0 0 {name=CORNER only_toplevel=true corner=tt}
 C {devices/lab_pin.sym} 1000 -520 0 0 {name=l18 sig_type=std_logic lab=PHI2
 }
 C {devices/vsource.sym} 200 -810 0 0 {name=V1 value=1.8 only_toplevel=true}
-C {devices/lab_pin.sym} 330 -740 0 0 {name=l23 sig_type=std_logic lab=CLK
+C {devices/lab_pin.sym} 120 -1170 0 0 {name=l23 sig_type=std_logic lab=CLK
 }
-C {devices/vsource.sym} 330 -710 0 0 {name=V2 
+C {devices/vsource.sym} 120 -1140 0 0 {name=V2 
 value="PULSE(0 1.8 0 \{t_rise\} \{t_fall\} \{(1-dutycycle)*1/clk_freq\} \{1/clk_freq\} 0)" 
 only_toplevel=true
 }
@@ -249,7 +245,7 @@ C {devices/iopin.sym} 60 -810 0 0 {name=p3 lab=VSS}
 C {devices/lab_pin.sym} 1180 -620 0 1 {name=l11 sig_type=std_logic lab=VSS
 }
 C {devices/lab_pin.sym} 200 -780 0 0 {name=l21 sig_type=std_logic lab=VSS}
-C {devices/lab_pin.sym} 330 -680 0 0 {name=l22 sig_type=std_logic lab=VSS}
+C {devices/lab_pin.sym} 120 -1110 0 0 {name=l22 sig_type=std_logic lab=VSS}
 C {devices/lab_pin.sym} 200 -840 0 0 {name=l26 sig_type=std_logic lab=VDD
 }
 C {devices/vsource.sym} 200 -900 0 0 {name=V4 value=0 only_toplevel=true}
@@ -374,50 +370,6 @@ C {devices/ngspice_get_expr.sym} 470 -230 0 0 {name=r5 node="[format %.4g [expr 
 descr="rds1 (off-state)"}
 C {devices/lab_wire.sym} 140 -350 0 1 {name=l5 sig_type=std_logic lab=VBE2}
 C {devices/lab_wire.sym} 140 -310 2 0 {name=l40 sig_type=std_logic lab=VBE1}
-C {devices/netlist_not_shown.sym} 1260 -950 0 0 {name=NGSPICE 
-only_toplevel=true 
-spice_ignore=false
-value="
-* Parameters *
-.param clk_freq = 1Meg
-.param dutycycle = 0.5
-.param t_rise = 1n
-.param t_fall = 1n
-
-* Switch model *
-.model SWITCH1 sw vt=1 vh=0.2 ron=1k roff=1Meg
-
-* Options *
-.options wnflag=1 RELTOL=0.001
-*.options wnflag=1 METHOD=GEAR ITL4=100 CHGTOL=1e-15 TRTOL=1 RELTOL=0.0001 VNTOL=0.1u
-.options savecurrents
-.save all
-.save @m.xm1.msky130_fd_pr__nfet_01v8[gds]
-.save @m.xm1.msky130_fd_pr__nfet_01v8[gm]
-.save @m.xm2.msky130_fd_pr__nfet_01v8[gds]
-.save @q.xq1.qsky130_fd_pr__pnp_05v5_W3p40L3p40[p]
-
-* Control *
-.control
-let run = 1
-set temp=0
-while run <= 3
-   if run > 1
-      reset
-      set appendwrite
-   end
-   let dtemp = 0 + 40*(run-1)
-   set temp=$&dtemp
-   tran 1n 10u 8u
-   write sc_bandgap.raw
-   let run = run + 1
-end
-reset
-op
-set appendwrite
-write sc_bandgap.raw
-.endc
-"}
 C {devices/lab_pin.sym} 1030 -1030 0 1 {name=l243 sig_type=std_logic lab=PHI2}
 C {devices/lab_pin.sym} 1030 -870 0 1 {name=l244 sig_type=std_logic lab=PHI1}
 C {devices/lab_pin.sym} 1110 -1100 0 1 {name=l61 sig_type=std_logic lab=N_PHI2}
@@ -449,9 +401,53 @@ C {devices/lab_pin.sym} 340 -580 2 1 {name=l10 sig_type=std_logic lab=N_PHI2
 }
 C {devices/lab_wire.sym} 860 -340 2 1 {name=l4 sig_type=std_logic lab=VSS}
 C {opamp_onepole.sym} 830 -320 0 0 {name=x6 gain=1e4 f3db=2e6 VDDPIN=VDD VSSPIN=VSS}
-C {devices/netlist_not_shown.sym} 1380 -950 0 0 {name=XYCE 
-only_toplevel=true 
-spice_ignore=true
+C {devices/simulator_commands.sym} 1250 -930 0 0 {name=NGSPICE
+simulator=ngspice
+only_toplevel=false 
+value="
+* Parameters *
+.param clk_freq = 1Meg
+.param dutycycle = 0.5
+.param t_rise = 1n
+.param t_fall = 1n
+
+* Switch model *
+.model SWITCH1 sw vt=1 vh=0.2 ron=1k roff=1Meg
+
+* Options *
+.options wnflag=1 RELTOL=0.001
+*.options wnflag=1 METHOD=GEAR ITL4=100 CHGTOL=1e-15 TRTOL=1 RELTOL=0.0001 VNTOL=0.1u
+.options savecurrents
+.save all
+.save @m.xm1.msky130_fd_pr__nfet_01v8[gds]
+.save @m.xm1.msky130_fd_pr__nfet_01v8[gm]
+.save @m.xm2.msky130_fd_pr__nfet_01v8[gds]
+.save @q.xq1.qsky130_fd_pr__pnp_05v5_W3p40L3p40[p]
+
+* Control *
+.control
+let run = 1
+set temp=0
+while run <= 2
+   if run > 1
+      reset
+      set appendwrite
+   end
+   let dtemp = 0 + 80*(run-1)
+   set temp=$&dtemp
+   tran 1n 10u 8u
+   write sc_bandgap.raw
+   let run = run + 1
+end
+reset
+op
+set appendwrite
+write sc_bandgap.raw
+.endc
+"}
+C {devices/simulator_commands.sym} 1370 -930 0 0 {name=XYCE
+simulator=xyce
+only_toplevel=false 
 value="
 * Parameters *
 .param clk_freq=1Meg
@@ -459,19 +455,9 @@ value="
 .param t_rise=1n
 .param t_fall=1n
 
-* Switch model *
-*.model SWITCH1 sw vt=1 vh=0.2 ron=1k roff=1Meg
-
-* Options *
-*.options wnflag=1 RELTOL=0.001
-*.options wnflag=1 METHOD=GEAR ITL4=100 CHGTOL=1e-15 TRTOL=1 RELTOL=0.0001 VNTOL=0.1u
-*.options savecurrents
-*.save all
-*.save @m.xm1.msky130_fd_pr__nfet_01v8[gds]
-*.save @m.xm1.msky130_fd_pr__nfet_01v8[gm]
-*.save @m.xm2.msky130_fd_pr__nfet_01v8[gds]
-*.save @q.xq1.qsky130_fd_pr__pnp_05v5_W3p40L3p40[p]
-
-.tran 1n 8u 10u
+* Commands *
+.step temp list 0 80
+.tran 1n 10u 8u
 .print tran format=raw file=sc_bandgap.raw V(*) I(*) 
+.print tran format=gnuplot file=sc_bandgap.dat V(vref)
 "}

@@ -1,44 +1,45 @@
-v {xschem version=3.0.0 file_version=1.2 }
+v {xschem version=3.1.0 file_version=1.2
+}
 G {}
 K {}
 V {}
 S {}
 E {}
 T {Placed a "not connected" label to supress spice 
-error saying that VDD and VSS is note connected.} 210 -190 0 0 0.2 0.2 {}
-N -30 -220 30 -220 {
+error saying that VDD and VSS is note connected.} 410 -340 0 0 0.2 0.2 {}
+N 170 -370 230 -370 {
 lab=DPIN}
-N -30 -90 -30 40 {
+N 170 -240 170 -110 {
 lab=DPIN}
-N -30 40 30 40 {
+N 170 -110 230 -110 {
 lab=DPIN}
-N 90 40 140 40 {
+N 290 -110 340 -110 {
 lab=SPIN}
-N 140 -90 140 40 {
+N 340 -240 340 -110 {
 lab=SPIN}
-N 90 -220 140 -220 {
+N 290 -370 340 -370 {
 lab=SPIN}
-N 140 -90 220 -90 {
+N 340 -240 420 -240 {
 lab=SPIN}
-N -110 -90 -30 -90 {
+N 90 -240 170 -240 {
 lab=DPIN}
-N 60 0 60 40 {
+N 260 -150 260 -110 {
 lab=VSSBPIN}
-N 140 -220 140 -90 {
+N 340 -370 340 -240 {
 lab=SPIN}
-N -30 -220 -30 -90 {
+N 170 -370 170 -240 {
 lab=DPIN}
-N 60 80 60 90 {
+N 260 -70 260 -60 {
 lab=GN}
-N 60 -270 60 -260 {
+N 260 -420 260 -410 {
 lab=GP}
-N 60 -220 60 -190 {
+N 260 -370 260 -340 {
 lab=VDDBPIN}
-C {sky130_fd_pr/nfet_01v8.sym} 60 60 3 0 {name=M1
+C {sky130_fd_pr/nfet_01v8.sym} 260 -90 3 0 {name=M1
 L=L_N
 W=W_N
 nf=1 
-mult=m
+mult=1
 ad="'int((nf+1)/2) * W/nf * 0.29'" 
 pd="'2*int((nf+1)/2) * (W/nf + 0.29)'"
 as="'int((nf+2)/2) * W/nf * 0.29'" 
@@ -48,11 +49,11 @@ sa=0 sb=0 sd=0
 model=nfet_01v8
 spiceprefix=X
 }
-C {sky130_fd_pr/pfet_01v8.sym} 60 -240 1 0 {name=M2
+C {sky130_fd_pr/pfet_01v8.sym} 260 -390 1 0 {name=M2
 L=L_P
 W=W_P
 nf=1
-mult=m
+mult=1
 ad="'int((nf+1)/2) * W/nf * 0.29'" 
 pd="'2*int((nf+1)/2) * (W/nf + 0.29)'"
 as="'int((nf+2)/2) * W/nf * 0.29'" 
@@ -62,13 +63,13 @@ sa=0 sb=0 sd=0
 model=pfet_01v8
 spiceprefix=X
 }
-C {devices/iopin.sym} -110 -90 0 1 {name=p1 lab=DPIN}
-C {devices/iopin.sym} 220 -90 0 0 {name=p2 lab=SPIN}
-C {devices/lab_pin.sym} 60 -190 3 0 {name=p6 lab=VDDBPIN}
-C {devices/lab_pin.sym} 60 0 1 0 {name=p5 lab=VSSBPIN}
-C {devices/lab_pin.sym} 310 -150 0 0 {name=l2 sig_type=std_logic lab=VDDBPIN}
-C {devices/noconn.sym} 310 -150 0 1 {name=l1}
-C {devices/lab_pin.sym} 420 -150 0 0 {name=l3 sig_type=std_logic lab=VSSBPIN}
-C {devices/noconn.sym} 420 -150 0 1 {name=l4}
-C {devices/ipin.sym} 60 -270 1 0 {name=p7 lab=GP}
-C {devices/ipin.sym} 60 90 3 0 {name=p4 lab=GN}
+C {devices/iopin.sym} 90 -240 0 1 {name=p1 lab=DPIN}
+C {devices/iopin.sym} 420 -240 0 0 {name=p2 lab=SPIN}
+C {devices/lab_pin.sym} 260 -340 3 0 {name=p6 lab=VDDBPIN}
+C {devices/lab_pin.sym} 260 -150 1 0 {name=p5 lab=VSSBPIN}
+C {devices/lab_pin.sym} 510 -300 0 0 {name=l2 sig_type=std_logic lab=VDDBPIN}
+C {devices/noconn.sym} 510 -300 0 1 {name=l1}
+C {devices/lab_pin.sym} 620 -300 0 0 {name=l3 sig_type=std_logic lab=VSSBPIN}
+C {devices/noconn.sym} 620 -300 0 1 {name=l4}
+C {devices/ipin.sym} 260 -420 1 0 {name=p7 lab=GP}
+C {devices/ipin.sym} 260 -60 3 0 {name=p4 lab=GN}

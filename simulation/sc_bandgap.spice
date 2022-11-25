@@ -63,6 +63,7 @@ x6 VSS VREF X VDD VSS opamp_onepole gain=1e4 f3db=2e6
 
 
 
+
 * Parameters *
 .param clk_freq = 1Meg
 .param dutycycle = 0.5
@@ -86,12 +87,12 @@ x6 VSS VREF X VDD VSS opamp_onepole gain=1e4 f3db=2e6
 .control
 let run = 1
 set temp=0
-while run <= 3
+while run <= 2
    if run > 1
       reset
       set appendwrite
    end
-   let dtemp = 0 + 40*(run-1)
+   let dtemp = 0 + 80*(run-1)
    set temp=$&dtemp
    tran 1n 10u 8u
    write sc_bandgap.raw
@@ -104,6 +105,10 @@ write sc_bandgap.raw
 .endc
 
 
+
+
+
+
 **** end user architecture code
 **.ends
 
@@ -112,24 +117,24 @@ write sc_bandgap.raw
 *+ /Users/nlv/Documents/DTU/9.Semester/IC-Open-Source/xschem-projects/sc-bandgap/transmissiongate.sym
 ** sch_path:
 *+ /Users/nlv/Documents/DTU/9.Semester/IC-Open-Source/xschem-projects/sc-bandgap/transmissiongate.sch
-.subckt transmissiongate GP DPIN SPIN GN  VDDBPIN  VSSBPIN   W_P=1 L_P=0.2 W_N=1 L_N=0.2
+.subckt transmissiongate GP DPIN SPIN GN VDDBPIN VSSBPIN  W_P=1 L_P=0.2 W_N=1 L_N=0.2
 *.iopin DPIN
 *.iopin SPIN
 *.ipin GP
 *.ipin GN
 XM1 DPIN GN SPIN VSSBPIN sky130_fd_pr__nfet_01v8 L=L_N W=W_N nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
 + pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W'
-+ sa=0 sb=0 sd=0 mult=m m=m
++ sa=0 sb=0 sd=0 mult=1 m=1
 XM2 DPIN GP SPIN VDDBPIN sky130_fd_pr__pfet_01v8 L=L_P W=W_P nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
 + pd='2*int((nf+1)/2) * (W/nf + 0.29)' ps='2*int((nf+2)/2) * (W/nf + 0.29)' nrd='0.29 / W' nrs='0.29 / W'
-+ sa=0 sb=0 sd=0 mult=m m=m
++ sa=0 sb=0 sd=0 mult=1 m=1
 .ends
 
 
 * expanding   symbol:  sky130_tests/lvnand.sym # of pins=3
 ** sym_path: /usr/local/share/pdk/sky130A/libs.tech/xschem/sky130_tests/lvnand.sym
 ** sch_path: /usr/local/share/pdk/sky130A/libs.tech/xschem/sky130_tests/lvnand.sch
-.subckt lvnand A B Y  VCCPIN  VSSPIN   WidthN=1 LenN=0.15 WidthP=1 LenP=0.15
+.subckt lvnand A B Y VCCPIN VSSPIN  WidthN=1 LenN=0.15 WidthP=1 LenP=0.15
 *.ipin A
 *.ipin B
 *.opin Y
@@ -151,7 +156,7 @@ XM4 S A VSSPIN VSSPIN sky130_fd_pr__nfet_01v8 L=LenN W=WidthN nf=1 ad='int((nf+1
 * expanding   symbol:  sky130_tests/not.sym # of pins=2
 ** sym_path: /usr/local/share/pdk/sky130A/libs.tech/xschem/sky130_tests/not.sym
 ** sch_path: /usr/local/share/pdk/sky130A/libs.tech/xschem/sky130_tests/not.sch
-.subckt not y a  VCCPIN  VSSPIN      W_N=1 L_N=0.15 W_P=2 L_P=0.15
+.subckt not y a VCCPIN VSSPIN     W_N=1 L_N=0.15 W_P=2 L_P=0.15
 *.opin y
 *.ipin a
 XM1 y a VSSPIN VSSPIN sky130_fd_pr__nfet_01v8 L=L_N W=W_N nf=1 ad='int((nf+1)/2) * W/nf * 0.29' as='int((nf+2)/2) * W/nf * 0.29'
@@ -168,7 +173,7 @@ XM2 y a VCCPIN VCCPIN sky130_fd_pr__pfet_01v8 L=L_P W=W_P nf=1 ad='int((nf+1)/2)
 *+ /Users/nlv/Documents/DTU/9.Semester/IC-Open-Source/xschem-projects/sc-bandgap/opamp_onepole.sym
 ** sch_path:
 *+ /Users/nlv/Documents/DTU/9.Semester/IC-Open-Source/xschem-projects/sc-bandgap/opamp_onepole.sch
-.subckt opamp_onepole POS OUT NEG  VDDPIN  VSSPIN   gain=1e4 f3db=2e6
+.subckt opamp_onepole POS OUT NEG VDDPIN VSSPIN  gain=1e4 f3db=2e6
 *.opin OUT
 *.ipin POS
 *.ipin NEG
